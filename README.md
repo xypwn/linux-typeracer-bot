@@ -1,5 +1,5 @@
 # Unix Typeracer Bot
-A simple typeracer bot for linux (and possibly mac), written in shell
+A simple typeracer bot for linux, written in shell
 ## General Notes
 * Works with firefox only but adding support for other browsers should be rather easy
 * Tested on linux but might work on mac as well
