@@ -12,6 +12,12 @@ term_win_id=""
 tr_win_id=""
 to_type=""
 
+# Function to divide two numbers
+divide()
+{
+	echo $1 $2 | awk '{ printf "%f", $1 / $2 }'
+}
+
 # *** Read Arguments ***
 print_help()
 {
@@ -45,7 +51,7 @@ do
 			exit 0
 		fi
 		# delay ~ 23400 / WPM
-		keystroke_delay=$(expr 23400 / ${!n})
+		keystroke_delay=$(divide 23400 ${!n})
 	elif [ $a == "--characters_per_minute" ] || [ $a == "-c" ]
 	then
 		if [ ! ${!n} ]
@@ -54,7 +60,7 @@ do
 			exit 0
 		fi
 		# delay ~ 117000 / CPM
-		keystroke_delay=$(expr 117000 / ${!n})
+		keystroke_delay=$(divide 117000 ${!n})
 	elif [ $a == "--keystroke_delay" ] || [ $a == "-k" ]
 	then
 		if [ ! ${!n} ]
