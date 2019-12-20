@@ -22,6 +22,9 @@ print_help()
 	echo ""
 	echo "Options:"
 	printf "\t-k, --keystroke_delay \e[3mmilliseconds\e[m\tdelay between keystrokes (default 10)\n"
+	printf "\t-w, --words_per_minute \e[3mwords\e[m\t\ttries to estimate the keystroke delay to achieve the given WPM value\n"
+	printf "\t-c, --characters_per_minute \e[3mcharacters\e[m\ttries to estimate the keystroke delay to achieve the given CPM value\n"
+	printf "\n"
 	printf "\t-f, --focus_delay \e[3mseconds\e[m\t\tdelay to begin with keystrokes after window refocus (default 0.1)\n"
 	printf "\t-d, --download_delay \e[3mseconds\e[m\t\ttime to wait for website download (default 1)\n"
 }
@@ -34,6 +37,24 @@ do
 	then
 		print_help
 		exit 0
+	elif [ $a == "--words_per_minute" ] || [ $a == "-w" ]
+	then
+		# delay ~ 23400 / WPM
+		keystroke_delay=$(expr 23400 / ${!n})
+		if [ ! $keystroke_delay ]
+		then
+			print_help
+			exit 0
+		fi
+	elif [ $a == "--characters_per_minute" ] || [ $a == "-c" ]
+	then
+		# delay ~ 117000 / CPM
+		keystroke_delay=$(expr 117000 / ${!n})
+		if [ ! $keystroke_delay ]
+		then
+			print_help
+			exit 0
+		fi
 	elif [ $a == "--keystroke_delay" ] || [ $a == "-k" ]
 	then
 		keystroke_delay=${!n}
