@@ -39,46 +39,46 @@ do
 		exit 0
 	elif [ $a == "--words_per_minute" ] || [ $a == "-w" ]
 	then
+		if [ ! ${!n} ]
+		then
+			printf "\t-w, --words_per_minute \e[3mwords\e[m\t\ntries to estimate the keystroke delay to achieve the given WPM value\n"
+			exit 0
+		fi
 		# delay ~ 23400 / WPM
 		keystroke_delay=$(expr 23400 / ${!n})
-		if [ ! $keystroke_delay ]
-		then
-			print_help
-			exit 0
-		fi
 	elif [ $a == "--characters_per_minute" ] || [ $a == "-c" ]
 	then
+		if [ ! ${!n} ]
+		then
+			printf "Option:\n\t-c, --characters_per_minute \e[3mcharacters\e[m\ntries to estimate the keystroke delay to achieve the given CPM value\n"
+			exit 0
+		fi
 		# delay ~ 117000 / CPM
 		keystroke_delay=$(expr 117000 / ${!n})
-		if [ ! $keystroke_delay ]
-		then
-			print_help
-			exit 0
-		fi
 	elif [ $a == "--keystroke_delay" ] || [ $a == "-k" ]
 	then
-		keystroke_delay=${!n}
-		if [ ! $keystroke_delay ]
+		if [ ! ${!n} ]
 		then
-			print_help
+			printf "Option:\n\t-k, --keystroke_delay \e[3mmilliseconds\e[m\ndelay between keystrokes (default 10)\n"
 			exit 0
 		fi
+		keystroke_delay=${!n}
 	elif [ $a == "--focus_delay" ] || [ $a == "-f" ]
 	then
-		focus_delay=${!n}
-		if [ ! $keystroke_delay ]
+		if [ ! ${!n} ]
 		then
-			print_help
+			printf "Option:\n\t-f, --focus_delay \e[3mseconds\e[m\ndelay to begin with keystrokes after window refocus (default 0.1)\n"
 			exit 0
 		fi
+		focus_delay=${!n}
 	elif [ $a == "--download_delay" ] || [ $a == "-d" ]
 	then
-		download_delay=${!n}
-		if [ ! $keystroke_delay ]
+		if [ ! ${!n} ]
 		then
-			print_help
+			printf "Option:\n\t-d, --download_delay \e[3mseconds\e[m\ntime to wait for website download (default 1)\n"
 			exit 0
 		fi
+		download_delay=${!n}
 	fi
 	n=$(expr $n + 1)
 done
