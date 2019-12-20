@@ -7,7 +7,7 @@ A simple typeracer bot for Linux/BSD, written in shell
 * Works on Linux and BSD
 * You will need [xdotool](https://github.com/jordansissel/xdotool) for this program to work
   * It should be available in you distro's repos under the name `xdotool`
-## Basic Usage
+## Installation and Basic Usage
 * open a terminal emulator
 * clone the repo using `git clone https://github.com/xypwn/unix-typeracer-bot.git`
 * cange directory into the new folder `cd unix-typeracer-bot`
