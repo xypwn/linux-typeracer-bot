@@ -1,5 +1,7 @@
 # Unix Typeracer Bot
 A simple typeracer bot for Linux/BSD, written in shell
+
+[![Video](https://i.imgur.com/icj1mHj.png)](https://i.imgur.com/viohEQ2.mp4)
 ## General Notes
 * Works with firefox only but adding support for other browsers should be rather easy
 * Tested on linux but might work on mac as well
