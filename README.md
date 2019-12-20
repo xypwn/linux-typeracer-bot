@@ -11,7 +11,7 @@ A simple typeracer bot for Linux/BSD, written in shell
 * cange directory into the new folder `cd unix-typeracer-bot`
 * open firefox and visit [typeracer.com](https://play.typeracer.com)
 * make sure to have the typeracer tab selected, then execute the script with `sh bot.sh`
-  ** if you want, you can type `sh bot.sh --help` to get some configuration options
+  * if you want, you can type `sh bot.sh --help` to get some configuration options
 * press **Enter** _after you have joined the race_ to retrieve the race text
 * press **Enter** again _after the race has started_ to make the bot start to type
 ## Troubleshooting
