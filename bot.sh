@@ -2,7 +2,7 @@
 
 # *** Definitions ***
 # Delay between keystrokes in milliseconds (-k)
-keystroke_delay=0
+keystroke_delay=10
 # Time to wait before typing after focusing on window (-f)
 focus_delay=0.1
 # Time to wait for website to download (-d)
@@ -21,7 +21,7 @@ print_help()
 	echo "All values given in seconds support floating point values (for example 0.1)"
 	echo ""
 	echo "Options:"
-	printf "\t-k, --keystroke_delay \e[3mmilliseconds\e[m\tdelay between keystrokes (default 0)\n"
+	printf "\t-k, --keystroke_delay \e[3mmilliseconds\e[m\tdelay between keystrokes (default 10)\n"
 	printf "\t-f, --focus_delay \e[3mseconds\e[m\t\tdelay to begin with keystrokes after window refocus (default 0.1)\n"
 	printf "\t-d, --download_delay \e[3mseconds\e[m\t\ttime to wait for website download (default 1)\n"
 }
