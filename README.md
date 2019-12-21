@@ -1,5 +1,5 @@
 # Unix Typeracer Bot
-A simple typeracer bot for Linux, BSD and MacOS, written in shell
+A simple typeracer bot for Linux and MacOS, written in shell
 
 [![Video](https://i.imgur.com/icj1mHj.png)](https://i.imgur.com/viohEQ2.mp4)
 ## General Notes
