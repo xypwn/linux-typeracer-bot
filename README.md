@@ -1,10 +1,10 @@
 # Unix Typeracer Bot
-A simple typeracer bot for Linux/BSD, written in shell
+A simple typeracer bot for Linux, BSD and MacOS, written in shell
 
 [![Video](https://i.imgur.com/icj1mHj.png)](https://i.imgur.com/viohEQ2.mp4)
 ## General Notes
 * Works with firefox only but adding support for other browsers should be rather easy
-* Works on Linux and BSD
+* Works on Linux, BSD and MacOS
 * You will need [xdotool](https://github.com/jordansissel/xdotool) for this program to work
   * It should be available in you distro's repos under the name `xdotool`
 ## Installation and Basic Usage
