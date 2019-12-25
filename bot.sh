@@ -1,18 +1,49 @@
 #! /usr/bin/sh
 
+# Check display server
+DISPLAY_SERVER=""
+if [ "$(ps -e | grep -w Xorg)" ]
+then
+	DISPLAY_SERVER=xorg
+else
+	DISPLAY_SERVER=other
+fi
+
+# Check if nescessary tools are installed on the system
+[ ! -e /bin/xdotool ] && [ ! -e /usr/bin/xdotool ] && printf "\e[31;1mPlease install xdotool (https://github.com/jordansissel/xdotool)\e[m\n" && exit 1
+
+# Only check for ydotool if not using XOrg
+[ "$DISPLAY_SERVER" == "other" ] && [ ! -e /bin/ydotool ] && [ ! -e /usr/bin/ydotool ] && printf "\e[31;1mPlease install ydotool if you are not using XOrg (https://github.com/ReimuNotMoe/ydotool)\e[m\n" && exit 1
+
+if [ "$DISPLAY_SERVER" == "other" ]
+then
+	# Find out if yhe ydotoold daemon is already running
+	if [ ! "$(ps -e | grep -w ydotoold)" ]
+	then
+		# Start daemon silently
+		ydotoold 2> /dev/null &
+		printf "\e[33;1mStarted ydotool daemon manually\e[m\n"
+	else
+		printf "\e[33;1mFound running ydotool daemon\e[m\n"
+	fi
+fi
+
 # *** Definitions ***
 # Delay between keystrokes in milliseconds (-k)
 keystroke_delay=10
 # Time to wait before typing after focusing on window (-f)
-focus_delay=0.1
+focus_delay=0.2
 # Time to wait for website to download (-d)
 download_delay=1
 
+# Terminal window ID
 term_win_id=""
+# Typeracer window ID
 tr_win_id=""
+# Race text
 to_type=""
 
-# Function to divide two numbers
+# Function to divide two numbers (okay, you could have probably guessed that)
 divide()
 {
 	echo $1 $2 | awk '{ printf "%f", $1 / $2 }'
@@ -31,11 +62,11 @@ print_help()
 	printf "\t-w, --words_per_minute \e[3mwords\e[m\t\ttries to estimate the keystroke delay to achieve the given WPM value\n"
 	printf "\t-c, --characters_per_minute \e[3mcharacters\e[m\ttries to estimate the keystroke delay to achieve the given CPM value\n"
 	printf "\n"
-	printf "\t-f, --focus_delay \e[3mseconds\e[m\t\tdelay to begin with keystrokes after window refocus (default 0.1)\n"
+	printf "\t-f, --focus_delay \e[3mseconds\e[m\t\tdelay to begin with keystrokes after window refocus (default 0.2)\n"
 	printf "\t-d, --download_delay \e[3mseconds\e[m\t\ttime to wait for website download (default 1)\n"
 }
 
-# n is the argument parameter's index, not the argument itself
+# n is the argument parameter's index, not that of the argument itself
 n=2
 for a in $*
 do
@@ -50,8 +81,8 @@ do
 			printf "\t-w, --words_per_minute \e[3mwords\e[m\t\ntries to estimate the keystroke delay to achieve the given WPM value\n"
 			exit 0
 		fi
-		# delay ~ 23400 / WPM
-		keystroke_delay=$(divide 23400 ${!n})
+		# delay ~ 11700 / WPM
+		keystroke_delay=$(divide 11700 ${!n})
 	elif [ $a == "--characters_per_minute" ] || [ $a == "-c" ]
 	then
 		if [ ! ${!n} ]
@@ -59,8 +90,8 @@ do
 			printf "Option:\n\t-c, --characters_per_minute \e[3mcharacters\e[m\ntries to estimate the keystroke delay to achieve the given CPM value\n"
 			exit 0
 		fi
-		# delay ~ 117000 / CPM
-		keystroke_delay=$(divide 117000 ${!n})
+		# delay ~ 58500 / CPM
+		keystroke_delay=$(divide 58500 ${!n})
 	elif [ $a == "--keystroke_delay" ] || [ $a == "-k" ]
 	then
 		if [ ! ${!n} ]
@@ -110,15 +141,28 @@ printf "\e[33;1mPress enter to start downloading HTML\e[m"
 read
 
 xdotool windowactivate $tr_win_id
-xdotool key Ctrl+s
+
+if [ "$DISPLAY_SERVER" == "other" ]
+then
+	ydotool key Ctrl+s 2> /dev/null
+else
+	xdotool key Ctrl+s
+fi
 
 sleep $focus_delay
 
 [ -e cache ] || mkdir cache
 
-# Effectively the same as "xdotool type $(pwd)" but replaces /home/<username> with ~ for faster typing
-xdotool type "$(echo $(pwd) | sed "s#${HOME}#~#g")/cache/typeracer"
-xdotool key Return
+# Type in the path to save the HTML file to
+if [ "$DISPLAY_SERVER" == "other" ]
+then
+	# Effectively the same as "ydotool type $(pwd)" but replaces /home/<username> with ~ for faster typing
+	ydotool type "$(echo $(pwd) | sed "s#${HOME}#~#g")/cache/typeracer" 2> /dev/null
+	ydotool key Enter 2> /dev/null
+else
+	xdotool type "$(echo $(pwd) | sed "s#${HOME}#~#g")/cache/typeracer"
+	xdotool key Return 2> /dev/null
+fi
 
 sleep $download_delay
 
@@ -137,11 +181,23 @@ to_type+=$(grep cache/typeracer.html.no_nl -o -e "<span unselectable=\"on\">\([^
 printf "\e[32;1mGoing to type:\e[m\n\e[3m${to_type}\e[m\n"
 
 # *** Type text ***
+# Set focus to terminal window
 xdotool windowactivate $term_win_id
 printf "\e[33;1mPress enter to start typing\e[m"
 read
 
+#Set focus to typeracer window
 xdotool windowactivate $tr_win_id
 sleep $focus_delay
 
-xdotool type --delay $keystroke_delay "$to_type"
+# Truncate the floating point number for the keystroke delay
+keystroke_delay=$(printf "$keystroke_delay" | cut -d "." -f 1)
+
+#Type the race text
+if [ "$DISPLAY_SERVER" == "other" ]
+then
+	ydotool type --key-delay $keystroke_delay "$to_type" 2> /dev/null
+else
+	# For some odd reason xdotool types with half the delay it actually should
+	xdotool type --delay $(expr "$keystroke_delay" \* 2) "$to_type"
+fi
