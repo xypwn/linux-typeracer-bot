@@ -10,7 +10,7 @@ A simple typeracer bot for Linux, written in shell
 * If you are not using Xorg, you will also need [ydotool](https://github.com/ReimuNotMoe/ydotool)
 ## Installation and Basic Usage
 * open a terminal emulator
-* clone the repo using `git clone https://github.com/xypwn/unix-typeracer-bot.git`
+* clone the repo using `git clone https://github.com/xypwn/linux-typeracer-bot.git`
 * cange directory into the new folder `cd unix-typeracer-bot`
 * open firefox and visit [typeracer.com](https://play.typeracer.com)
 * make sure to have the typeracer tab selected, then execute the script with `sh bot.sh`
