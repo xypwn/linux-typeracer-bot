@@ -151,16 +151,16 @@ fi
 
 sleep $focus_delay
 
-[ -e cache ] || mkdir cache
+# Create /tmp/tr-bot to save some temporary files
+[ -e /tmp/tr-bot ] || mkdir /tmp/tr-bot
 
 # Type in the path to save the HTML file to
 if [ "$DISPLAY_SERVER" == "other" ]
 then
-	# Effectively the same as "ydotool type $(pwd)" but replaces /home/<username> with ~ for faster typing
-	ydotool type "$(echo $(pwd) | sed "s#${HOME}#~#g")/cache/typeracer" 2> /dev/null
+	ydotool type "/tmp/tr-bot/tr" 2> /dev/null
 	ydotool key Enter 2> /dev/null
 else
-	xdotool type "$(echo $(pwd) | sed "s#${HOME}#~#g")/cache/typeracer"
+	xdotool type "/tmp/tr-bot/tr"
 	xdotool key Return 2> /dev/null
 fi
 
@@ -168,15 +168,15 @@ sleep $download_delay
 
 # *** Extract text to type out of HTML
 # Create a copy of typeracer.html without newlines and save it to typerace.html.no_nl
-cat cache/typeracer.html | tr -d "\n" > cache/typeracer.html.no_nl
+cat /tmp/tr-bot/tr.html | tr -d "\n" > /tmp/tr-bot/tr.html.no_nl
 
 # * Match regexes to find text *
 # First letter
-to_type+=$(grep cache/typeracer.html.no_nl -o -e "<span unselectable=\"on\" class=\"\w\{8\} \w\{8\}\">\([^<]\|$\)\+" | cut -b 51)
+to_type+=$(grep /tmp/tr-bot/tr.html.no_nl -o -e "<span unselectable=\"on\" class=\"\w\{8\} \w\{8\}\">\([^<]\|$\)\+" | cut -b 51)
 # Other letters of first word
-to_type+=$(grep cache/typeracer.html.no_nl -o -e "<span unselectable=\"on\" class=\"\w\{8\}\">\([^<]\|$\)\+" | cut -b 42-)
+to_type+=$(grep /tmp/tr-bot/tr.html.no_nl -o -e "<span unselectable=\"on\" class=\"\w\{8\}\">\([^<]\|$\)\+" | cut -b 42-)
 # Rest of text
-to_type+=$(grep cache/typeracer.html.no_nl -o -e "<span unselectable=\"on\">\([^<]\|$\)\+" | cut -b 25-)
+to_type+=$(grep /tmp/tr-bot/tr.html.no_nl -o -e "<span unselectable=\"on\">\([^<]\|$\)\+" | cut -b 25-)
 
 printf "\e[32;1mGoing to type:\e[m\n\e[3m${to_type}\e[m\n"
 
