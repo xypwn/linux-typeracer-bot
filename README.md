@@ -3,7 +3,7 @@ A simple typeracer bot for Linux, written in shell
 
 [![Video](https://i.imgur.com/icj1mHj.png)](https://i.imgur.com/viohEQ2.mp4)
 ## General Notes
-* Only works Linux using Firefox
+* Currently only works on Linux using Firefox
 * You will need [xdotool](https://github.com/jordansissel/xdotool) for this program to work
   * It should be available in you distro's repos under the name `xdotool`
 * If you are not using Xorg, you will also need [ydotool](https://github.com/ReimuNotMoe/ydotool)
