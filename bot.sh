@@ -122,7 +122,7 @@ done
 
 
 # *** Clean up ***
-rm -rf cache
+rm -rf /tmp/tr-bot
 
 # *** Get the id of the terminal window and the firefox window with typeracer opened in it ***
 term_win_id=$(xdotool getactivewindow)
