@@ -17,7 +17,7 @@ fi
 
 if [ "$DISPLAY_SERVER" == "other" ]
 then
-	# Find out if yhe ydotoold daemon is already running
+	# Find out if the ydotool daemon is already running
 	if [ ! "$(ps -e | grep -w ydotoold)" ]
 	then
 		# Start daemon silently
